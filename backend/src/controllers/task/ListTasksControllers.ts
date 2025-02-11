@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ListTasksServices } from "../services/task/ListTasksServices";
+import { ListTasksServices } from "../../services/task/ListTasksServices";
 
 class ListTasksControllers {
   async handle(req: Request, res: Response) {

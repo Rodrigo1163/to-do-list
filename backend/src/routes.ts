@@ -1,8 +1,8 @@
 import { Router } from "express";
-import CreateTasksControllers from "./controllers/CreateTasksControllers";
-import { ListTasksControllers } from "./controllers/ListTasksControllers";
-import { CompleteTasksControllers } from "./controllers/CompleteTasksControllers";
-import { DeleteTasksControllers } from "./controllers/DeleteTasksControllers";
+import CreateTasksControllers from "./controllers/task/CreateTasksControllers";
+import { ListTasksControllers } from "./controllers/task/ListTasksControllers";
+import { CompleteTasksControllers } from "./controllers/task/CompleteTasksControllers";
+import { DeleteTasksControllers } from "./controllers/task/DeleteTasksControllers";
 
 const router = Router();
 
