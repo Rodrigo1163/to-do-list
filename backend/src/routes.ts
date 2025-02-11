@@ -1,10 +1,8 @@
-import { Router, Request, Response } from "express";
-import connection from "./connection/connection";
+import { Router } from "express";
+import CreateTasksControllers from "./controllers/CreateTasksControllers";
 
 const router = Router();
 
-router.get("/", async (req: Request, res: Response) => {
-  res.json({ message: "hello world!" });
-});
+router.post("/task", new CreateTasksControllers().handle);
 
 export { router };
