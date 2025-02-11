@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
 import { Loading } from "./loading";
+import toast from "react-hot-toast";
 
 interface TaskProps {
   id: number;
@@ -13,6 +14,23 @@ interface TaskProps {
 export function ColumnTask() {
   const [tasks, setTasks] = useState<TaskProps[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingDelete, setLoadingDelete] = useState(false);
+
+  async function deleteTask(id: number) {
+    setLoadingDelete(true);
+    try {
+      const response = await api.delete(`/task/${id}`);
+      toast.success(response.data);
+      const tasksFiltered = tasks.filter((task) => task.id !== id);
+      setTasks(tasksFiltered);
+    } catch (error) {
+      console.log(error);
+      toast.error(error);
+    } finally {
+      setLoadingDelete(false);
+    }
+  }
+
   async function fetchTask() {
     setLoading(true);
     try {
@@ -67,7 +85,9 @@ export function ColumnTask() {
             {tasks.length === 0 && (
               <tbody>
                 <tr>
-                  <td>Nenhuma tarafa adicionada</td>
+                  <td colSpan={4} className="text-center p-4">
+                    Nenhuma tarafa adicionada
+                  </td>
                 </tr>
               </tbody>
             )}
@@ -91,7 +111,11 @@ export function ColumnTask() {
                   </td>
 
                   <td className="p-4 border-b border-blue-gray-50 space-x-2">
-                    <button className="bg-red-600 rounded p-2 text-white hover:bg-red-500 transition-all">
+                    <button
+                      className="bg-red-600 rounded p-2 text-white hover:bg-red-500 transition-all disabled:bg-red-400"
+                      onClick={() => deleteTask(task.id)}
+                      disabled={loadingDelete}
+                    >
                       Excluir
                     </button>
                     <button className="bg-blue-600 rounded p-2 text-white hover:bg-blue-500 transition-all">
