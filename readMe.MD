@@ -21,11 +21,15 @@ As tecnologias utilizadas no backend foram:
 - Typescript: É uma linguagem variante do JavaScript que adiciona tipagem estática opcional e outras características para ajudar a construir aplicações mais escaláveis.
 - Mysql2: É uma biblioteca utilizada para fazer a conexão com o banco de dados mysqli.
 - Cors: para liberar o acesso à API.
+- dotenv: biblioteca utilizada para carregar as variáveis de ambientes
+- express-async-errors: biblioteca utilizada para tratamento de error da api
 ## Frontend
 No frontend a tecnologia utilizada foi o Nextjs.
 As principais tecnologias utilizadas no frontend foram: 
 - Axios: Biblioteca utilizada para fazer requisições.
 - tailwind css: Biblioteca de estilização css
+- react-hot-toast: Biblioteca utilizada para criar mensagens de notificação em tela.
+- classnames: Uma simples utilidade JavaScript para juntar nomes de classes condicionalmente.
 
 ### Páginas
 #### Task
