@@ -3,7 +3,7 @@ import { useState } from "react";
 import { api } from "../services/api";
 import { Loading } from "./loading";
 import toast from "react-hot-toast";
-
+import classNames from "classnames";
 export interface TaskProps {
   id: number;
   title: string;
@@ -111,12 +111,16 @@ export function TableTask({ loading, setTasks, tasks }: TableTaskProps) {
                     </p>
                   </td>
                   <td className="p-4 border-b border-blue-gray-50">
-                    <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                    <p
+                      className={`block font-sans text-sm antialiased font-semibold leading-normal text-blue-gray-900 ${classNames(
+                        task.completed ? "text-green-500 " : "text-red-500"
+                      )}`}
+                    >
                       {task.completed ? "concluída" : "Não concluída"}
                     </p>
                   </td>
 
-                  <td className="p-4 border-b border-blue-gray-50 space-x-2">
+                  <td className="p-4 border-b border-blue-gray-50 flex gap-2 flex-wrap">
                     <button
                       className="bg-red-600 rounded p-2 text-white hover:bg-red-500 transition-all disabled:bg-red-400 disabled:cursor-not-allowed"
                       onClick={() => deleteTask(task.id)}
