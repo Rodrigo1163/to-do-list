@@ -2,6 +2,7 @@
 import { api } from "../services/api";
 import toast from "react-hot-toast";
 import { TaskProps } from "./tableTask";
+import { useState } from "react";
 
 interface CreateTaskProps {
   setTasks: (tasks: TaskProps[]) => void;
@@ -9,13 +10,15 @@ interface CreateTaskProps {
 }
 
 export function CreateTask({ tasks, setTasks }: CreateTaskProps) {
+  const [loading, setLoading] = useState(false);
   async function createNewTask(e: FormData) {
     const task = e.get("task");
-    console.log(task);
+
     if (!task) {
       toast.error("O campo não pode está vazio!");
       return;
     }
+    setLoading(true);
     try {
       const response = await api.post("/task", { title: task });
       setTasks([...tasks, response.data[0]]);
@@ -23,6 +26,8 @@ export function CreateTask({ tasks, setTasks }: CreateTaskProps) {
     } catch (error) {
       console.log(error);
       toast.error("error ao criar a tarefa");
+    } finally {
+      setLoading(false);
     }
   }
   return (
@@ -42,8 +47,9 @@ export function CreateTask({ tasks, setTasks }: CreateTaskProps) {
         />
       </div>
       <button
-        className="mt-auto h-10 bg-emerald-600 px-4 rounded text-white font-bold"
+        className="mt-auto h-10 bg-emerald-600 px-4 rounded text-white font-bold disabled:bg-emerald-400 disabled:cursor-not-allowed transition-all"
         type="submit"
+        disabled={loading}
       >
         Criar
       </button>
