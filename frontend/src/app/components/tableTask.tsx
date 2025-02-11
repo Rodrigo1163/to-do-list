@@ -1,19 +1,22 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { api } from "../services/api";
 import { Loading } from "./loading";
 import toast from "react-hot-toast";
 
-interface TaskProps {
+export interface TaskProps {
   id: number;
   title: string;
   completed: boolean;
   created_at: string;
 }
+interface TableTaskProps {
+  setTasks: (tasks: TaskProps[]) => void;
+  tasks: TaskProps[];
+  loading: boolean;
+}
 
-export function ColumnTask() {
-  const [tasks, setTasks] = useState<TaskProps[]>([]);
-  const [loading, setLoading] = useState(true);
+export function TableTask({ loading, setTasks, tasks }: TableTaskProps) {
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [loadingUpdate, setLoadingUpdate] = useState(false);
   async function deleteTask(id: number) {
@@ -48,20 +51,6 @@ export function ColumnTask() {
     }
   }
 
-  async function fetchTask() {
-    setLoading(true);
-    try {
-      const response = await api.get("/task");
-      setTasks(response.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  }
-  useEffect(() => {
-    fetchTask();
-  }, []);
   return (
     <div className="w-4/5 relative mt-10 flex flex-col h-full overflow-hidden bg-white shadow-md rounded-xl bg-clip-border">
       <table className="w-full text-left table-auto min-w-max">
@@ -129,14 +118,14 @@ export function ColumnTask() {
 
                   <td className="p-4 border-b border-blue-gray-50 space-x-2">
                     <button
-                      className="bg-red-600 rounded p-2 text-white hover:bg-red-500 transition-all disabled:bg-red-400"
+                      className="bg-red-600 rounded p-2 text-white hover:bg-red-500 transition-all disabled:bg-red-400 disabled:cursor-not-allowed"
                       onClick={() => deleteTask(task.id)}
                       disabled={loadingDelete}
                     >
                       Excluir
                     </button>
                     <button
-                      className="bg-blue-600 rounded p-2 text-white hover:bg-blue-500 transition-all disabled:bg-blue-300"
+                      className="bg-blue-600 rounded p-2 text-white hover:bg-blue-500 transition-all disabled:bg-blue-300 disabled:cursor-not-allowed"
                       onClick={() => CompleteTask(task.id)}
                       disabled={loadingUpdate || task.completed}
                     >
