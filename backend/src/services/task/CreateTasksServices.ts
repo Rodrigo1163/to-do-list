@@ -12,7 +12,11 @@ class CreateTasksServices {
       await connection.query(query, [title]);
       return "Tarefa inserida com sucesso!";
     } catch (error) {
-      throw new Error("Error ao criar a tarefa");
+      throw new Error(
+        error instanceof Error
+          ? error.message
+          : "Erro desconhecido ao inserir tarefa."
+      );
     }
   }
 }

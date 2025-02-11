@@ -8,7 +8,7 @@ class CreateTasksControllers {
     const response = await createTasksServices.execute({
       title,
     });
-    res.json(response);
+    return res.json(response);
   }
 }
 
