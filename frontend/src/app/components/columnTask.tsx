@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
+import { Loading } from "./loading";
 
 interface TaskProps {
   id: number;
@@ -11,13 +12,16 @@ interface TaskProps {
 
 export function ColumnTask() {
   const [tasks, setTasks] = useState<TaskProps[]>([]);
-
+  const [loading, setLoading] = useState(true);
   async function fetchTask() {
+    setLoading(true);
     try {
       const response = await api.get("/task");
       setTasks(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }
   useEffect(() => {
@@ -50,36 +54,55 @@ export function ColumnTask() {
             </th>
           </tr>
         </thead>
-        <tbody>
-          {tasks.map((task) => (
-            <tr key={task.id}>
-              <td className="p-4 border-b border-blue-gray-50">
-                <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                  {task.title}
-                </p>
-              </td>
-              <td className="p-4 border-b border-blue-gray-50">
-                <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                  {new Date(task.created_at).toLocaleDateString("pt-br")}
-                </p>
-              </td>
-              <td className="p-4 border-b border-blue-gray-50">
-                <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                  {task.completed ? "Realizada" : "Não relizada"}
-                </p>
-              </td>
-
-              <td className="p-4 border-b border-blue-gray-50 space-x-2">
-                <button className="bg-red-600 rounded p-2 text-white hover:bg-red-500 transition-all">
-                  Excluir
-                </button>
-                <button className="bg-blue-600 rounded p-2 text-white hover:bg-blue-500 transition-all">
-                  Editar
-                </button>
+        {loading ? (
+          <tbody>
+            <tr>
+              <td colSpan={4}>
+                <Loading />
               </td>
             </tr>
-          ))}
-        </tbody>
+          </tbody>
+        ) : (
+          <>
+            {tasks.length === 0 && (
+              <tbody>
+                <tr>
+                  <td>Nenhuma tarafa adicionada</td>
+                </tr>
+              </tbody>
+            )}
+            <tbody>
+              {tasks.map((task) => (
+                <tr key={task.id}>
+                  <td className="p-4 border-b border-blue-gray-50">
+                    <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                      {task.title}
+                    </p>
+                  </td>
+                  <td className="p-4 border-b border-blue-gray-50">
+                    <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                      {new Date(task.created_at).toLocaleDateString("pt-br")}
+                    </p>
+                  </td>
+                  <td className="p-4 border-b border-blue-gray-50">
+                    <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                      {task.completed ? "Realizada" : "Não relizada"}
+                    </p>
+                  </td>
+
+                  <td className="p-4 border-b border-blue-gray-50 space-x-2">
+                    <button className="bg-red-600 rounded p-2 text-white hover:bg-red-500 transition-all">
+                      Excluir
+                    </button>
+                    <button className="bg-blue-600 rounded p-2 text-white hover:bg-blue-500 transition-all">
+                      Editar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </>
+        )}
       </table>
     </div>
   );
