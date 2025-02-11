@@ -13,9 +13,7 @@ class CreateTasksServices {
       return "Tarefa inserida com sucesso!";
     } catch (error) {
       throw new Error(
-        error instanceof Error
-          ? error.message
-          : "Erro desconhecido ao inserir tarefa."
+        error instanceof Error ? error.message : "Erro ao inserir tarefa."
       );
     }
   }
