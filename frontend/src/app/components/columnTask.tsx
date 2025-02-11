@@ -15,7 +15,7 @@ export function ColumnTask() {
   const [tasks, setTasks] = useState<TaskProps[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingDelete, setLoadingDelete] = useState(false);
-
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
   async function deleteTask(id: number) {
     setLoadingDelete(true);
     try {
@@ -28,6 +28,23 @@ export function ColumnTask() {
       toast.error(error);
     } finally {
       setLoadingDelete(false);
+    }
+  }
+
+  async function CompleteTask(id: number) {
+    setLoadingUpdate(true);
+    try {
+      const response = await api.put(`/task/${id}`);
+      toast.success(response.data);
+      const updateTask = tasks.map((task) =>
+        task.id === id ? { ...task, completed: true } : task
+      );
+      setTasks(updateTask);
+    } catch (error) {
+      console.log(error);
+      toast.error(error);
+    } finally {
+      setLoadingUpdate(false);
     }
   }
 
@@ -106,7 +123,7 @@ export function ColumnTask() {
                   </td>
                   <td className="p-4 border-b border-blue-gray-50">
                     <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
-                      {task.completed ? "Realizada" : "Não relizada"}
+                      {task.completed ? "concluída" : "Não concluída"}
                     </p>
                   </td>
 
@@ -118,8 +135,12 @@ export function ColumnTask() {
                     >
                       Excluir
                     </button>
-                    <button className="bg-blue-600 rounded p-2 text-white hover:bg-blue-500 transition-all">
-                      Editar
+                    <button
+                      className="bg-blue-600 rounded p-2 text-white hover:bg-blue-500 transition-all disabled:bg-blue-300"
+                      onClick={() => CompleteTask(task.id)}
+                      disabled={loadingUpdate || task.completed}
+                    >
+                      Concluir
                     </button>
                   </td>
                 </tr>
