@@ -42,7 +42,7 @@ Página onde a pessoa usuária pode ver todas as suas tarefas, além de marcar c
 - Clona este repositorio. 
 - Criar um arquivo .env na raiz do projeto, com base no .env.example, definindo os valores de cada variável de ambiente usada.
 ### Passo a passo
-##### primeiro você que configurar o banco de dados.
+##### primeiro você terá que configurar o banco de dados.
 1 - você terá que iniciar o banco de dados na sua máquina
 2 - você terá que usar o o seguinte comando para fazer a criação das tabelas
 ```sql
